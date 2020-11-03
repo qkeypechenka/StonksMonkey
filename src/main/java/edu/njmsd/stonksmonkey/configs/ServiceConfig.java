@@ -19,14 +19,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ServiceConfig {
+
     @Bean
     public CrudService<OperationCategory> incomeCategoryCrudService(CrudRepository<OperationCategory> incomeCategoryCrudRepository) {
         return new CrudService<>(incomeCategoryCrudRepository);
-    }
-
-    @Bean
-    public CrudService<OperationCategory> expenseCategoryCrudService(CrudRepository<OperationCategory> expenseCategoryCrudRepository) {
-        return new CrudService<>(expenseCategoryCrudRepository);
     }
 
     @Bean
@@ -34,6 +30,11 @@ public class ServiceConfig {
             IncomeCategoryRepository repository,
             ModelMapper<OperationCategory, IncomeCategoryEntity> mapper) {
         return new CrudRepositoryAdapter<>(repository, mapper);
+    }
+
+    @Bean
+    public CrudService<OperationCategory> expenseCategoryCrudService(CrudRepository<OperationCategory> expenseCategoryCrudRepository) {
+        return new CrudService<>(expenseCategoryCrudRepository);
     }
 
     @Bean

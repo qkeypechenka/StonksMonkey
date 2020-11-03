@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ExpenseCategoryEntityMapper implements ModelMapper<OperationCategory, ExpenseCategoryEntity> {
+
     @Override
     public OperationCategory mapToModel(ExpenseCategoryEntity from) {
         return from;
@@ -13,10 +14,6 @@ public class ExpenseCategoryEntityMapper implements ModelMapper<OperationCategor
 
     @Override
     public ExpenseCategoryEntity mapFromModel(OperationCategory model) {
-        return new ExpenseCategoryEntity(
-                model.getId(),
-                model.getUserId(),
-                model.getName()
-        );
+        return new ExpenseCategoryEntity(model.getId(), model.getUserId(), model.getName());
     }
 }

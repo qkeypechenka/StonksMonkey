@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CrudRepositoryAdapter<M, E, R extends JpaRepository<E, Long>> implements CrudRepository<M> {
+
     private final R repository;
     private final ModelMapper<M, E> mapper;
-
 
     public CrudRepositoryAdapter(R repository, ModelMapper<M, E> mapper) {
         this.repository = repository;

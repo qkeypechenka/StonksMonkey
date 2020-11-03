@@ -6,6 +6,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "expenses")
 public class ExpenseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

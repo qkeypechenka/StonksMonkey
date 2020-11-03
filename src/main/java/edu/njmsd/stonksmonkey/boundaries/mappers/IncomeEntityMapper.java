@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class IncomeEntityMapper implements ModelMapper<Operation, IncomeEntity> {
+
     private final ModelMapper<OperationCategory, IncomeCategoryEntity> categoryMapper;
 
     public IncomeEntityMapper(ModelMapper<OperationCategory, IncomeCategoryEntity> categoryMapper) {
@@ -21,7 +22,8 @@ public class IncomeEntityMapper implements ModelMapper<Operation, IncomeEntity> 
                 model.getUserId(),
                 categoryMapper.mapFromModel(model.getCategory()),
                 model.getAmount(),
-                model.getDate());
+                model.getDate()
+        );
     }
 
     @Override
@@ -31,6 +33,7 @@ public class IncomeEntityMapper implements ModelMapper<Operation, IncomeEntity> 
                 from.getUserId(),
                 categoryMapper.mapToModel(from.getCategory()),
                 from.getAmount(),
-                from.getDate());
+                from.getDate()
+        );
     }
 }
