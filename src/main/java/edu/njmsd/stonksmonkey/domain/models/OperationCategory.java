@@ -1,10 +1,26 @@
 package edu.njmsd.stonksmonkey.domain.models;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public class OperationCategory {
 
-    private final long id;
-    private final long userId;
-    private final String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    private long userId;
+    private String name;
+
+    protected OperationCategory() {
+    }
+
+    public OperationCategory(long userId, String name) {
+        this.userId = userId;
+        this.name = name;
+    }
 
     public OperationCategory(long id, long userId, String name) {
         this.id = id;
