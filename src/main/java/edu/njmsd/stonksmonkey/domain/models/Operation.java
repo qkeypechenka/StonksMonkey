@@ -4,11 +4,18 @@ import java.time.LocalDate;
 
 public class Operation {
 
-    private final long id;
+    private long id;
     private final long userId;
     private final OperationCategory category;
     private final double amount;
     private final LocalDate date;
+
+    public Operation(long userId, OperationCategory category, double amount, LocalDate date) {
+        this.userId = userId;
+        this.category = category;
+        this.amount = amount;
+        this.date = date;
+    }
 
     public Operation(long id, long userId, OperationCategory category, double amount, LocalDate date) {
         this.id = id;
