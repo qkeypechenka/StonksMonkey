@@ -3,6 +3,7 @@ package edu.njmsd.stonksmonkey.api.controllers.category;
 import edu.njmsd.stonksmonkey.api.dto.ListResponse;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategoryDto;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategoryModificationDto;
+import edu.njmsd.stonksmonkey.boundaries.mappers.Mapper;
 import edu.njmsd.stonksmonkey.domain.models.OperationCategory;
 import edu.njmsd.stonksmonkey.domain.services.CrudService;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +17,21 @@ import java.util.stream.Collectors;
 abstract class BaseCategoryController {
 
     private final CrudService<OperationCategory> service;
+    private final Mapper<OperationCategory, OperationCategoryDto> categoryDtoMapper;
+    private final Mapper<OperationCategoryModificationDto, OperationCategory> categoryMapper;
 
-    protected BaseCategoryController(CrudService<OperationCategory> service) {
+    protected BaseCategoryController(
+            CrudService<OperationCategory> service,
+            Mapper<OperationCategory, OperationCategoryDto> categoryDtoMapper,
+            Mapper<OperationCategoryModificationDto, OperationCategory> categoryMapper) {
         this.service = service;
+        this.categoryDtoMapper = categoryDtoMapper;
+        this.categoryMapper = categoryMapper;
     }
 
     @GetMapping
     public ListResponse<OperationCategoryDto> getCategories() {
-        var items = service.get().stream()
-                .map(category -> new OperationCategoryDto(category.getId(), category.getName()))
-                .collect(Collectors.toList());
+        var items = service.get().stream().map(categoryDtoMapper::map).collect(Collectors.toList());
         return new ListResponse<>(items);
     }
 
@@ -33,18 +39,18 @@ abstract class BaseCategoryController {
     public ResponseEntity<OperationCategoryDto> createCategory(
             @RequestBody OperationCategoryModificationDto modification,
             HttpServletRequest request) throws URISyntaxException {
-        var category = service.create(new OperationCategory(0, modification.getName()));
+        var category = service.create(categoryMapper.map(modification));
         var uri = new URI(request.getRequestURI() + "/" + category.getId());
-        var categoryDto = new OperationCategoryDto(category.getId(), category.getName());
-        return ResponseEntity.created(uri).body(categoryDto);
+        return ResponseEntity.created(uri).body(categoryDtoMapper.map(category));
     }
 
     @PutMapping("/{id}")
     public OperationCategoryDto updateCategory(
             @PathVariable long id,
             @RequestBody OperationCategoryModificationDto modification) {
-        var category = service.update(new OperationCategory(id, 0, modification.getName()));
-        return new OperationCategoryDto(category.getId(), category.getName());
+        var category = service.update(categoryMapper.map(modification));
+        category.setId(id);
+        return categoryDtoMapper.map(category);
     }
 
     @DeleteMapping("/{id}")

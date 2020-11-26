@@ -4,31 +4,40 @@ import java.time.LocalDate;
 
 public class OperationDto {
 
-    private final long id;
-    private final OperationCategoryDto category;
-    private final double amount;
-    private final LocalDate date;
-
-    public OperationDto(long id, OperationCategoryDto category, double amount, LocalDate date) {
-        this.id = id;
-        this.category = category;
-        this.amount = amount;
-        this.date = date;
-    }
+    private long id;
+    private OperationCategoryDto category;
+    private double amount;
+    private LocalDate date;
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public OperationCategoryDto getCategory() {
         return category;
     }
 
+    public void setCategory(OperationCategoryDto category) {
+        this.category = category;
+    }
+
     public double getAmount() {
         return amount;
     }
 
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
     public LocalDate getDate() {
         return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }
