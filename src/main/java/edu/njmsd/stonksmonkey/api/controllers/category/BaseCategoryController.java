@@ -48,8 +48,9 @@ abstract class BaseCategoryController {
     public OperationCategoryDto updateCategory(
             @PathVariable long id,
             @RequestBody OperationCategoryModificationDto modification) {
-        var category = service.update(categoryMapper.map(modification));
+        var category = categoryMapper.map(modification);
         category.setId(id);
+        category = service.update(category);
         return categoryDtoMapper.map(category);
     }
 
