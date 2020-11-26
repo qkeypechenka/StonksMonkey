@@ -16,7 +16,7 @@ public class AutoMapper<S, T> implements ReversibleMapper<S, T> {
 
     @Override
     public T map(S source) {
-        return modelMapper.map(source, target);
+        return source == null ? null : modelMapper.map(source, target);
     }
 
     @Override

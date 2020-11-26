@@ -17,13 +17,17 @@ public class OperationCrudService extends CrudService<Operation> {
 
     @Override
     public Operation create(Operation model) {
-        model.setCategory(categoryRepository.findById(model.getCategory().getId()));
-        return super.create(model);
+        return super.create(resolveCategory(model));
     }
 
     @Override
     public Operation update(Operation model) {
-        model.setCategory(categoryRepository.findById(model.getCategory().getId()));
-        return super.update(model);
+        return super.update(resolveCategory(model));
+    }
+
+    private Operation resolveCategory(Operation operation) {
+        if (operation.getCategory() != null)
+            operation.setCategory(categoryRepository.findById(operation.getCategory().getId()));
+        return operation;
     }
 }
