@@ -14,6 +14,7 @@ import edu.njmsd.stonksmonkey.domain.models.Operation;
 import edu.njmsd.stonksmonkey.domain.models.OperationCategory;
 import edu.njmsd.stonksmonkey.domain.repositories.CrudRepository;
 import edu.njmsd.stonksmonkey.domain.services.CrudService;
+import edu.njmsd.stonksmonkey.domain.services.OperationCrudService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -45,8 +46,10 @@ public class ServiceConfig {
     }
 
     @Bean
-    public CrudService<Operation> expenseCrudService(CrudRepository<Operation> expenseCrudRepository) {
-        return new CrudService<>(expenseCrudRepository);
+    public CrudService<Operation> expenseCrudService(
+            CrudRepository<Operation> expenseCrudRepository,
+            CrudRepository<OperationCategory> expenseCategoryCrudRepository) {
+        return new OperationCrudService(expenseCrudRepository, expenseCategoryCrudRepository);
     }
 
     @Bean
@@ -57,8 +60,10 @@ public class ServiceConfig {
     }
 
     @Bean
-    public CrudService<Operation> incomeCrudService(CrudRepository<Operation> incomeCrudRepository) {
-        return new CrudService<>(incomeCrudRepository);
+    public CrudService<Operation> incomeCrudService(
+            CrudRepository<Operation> incomeCrudRepository,
+            CrudRepository<OperationCategory> incomeCategoryCrudRepository) {
+        return new OperationCrudService(incomeCrudRepository, incomeCategoryCrudRepository);
     }
 
     @Bean
