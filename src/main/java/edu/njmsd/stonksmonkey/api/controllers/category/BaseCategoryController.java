@@ -4,10 +4,14 @@ import edu.njmsd.stonksmonkey.api.dto.ListResponse;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategoryDto;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategoryModificationDto;
 import edu.njmsd.stonksmonkey.boundaries.mappers.Mapper;
+import edu.njmsd.stonksmonkey.domain.exceptions.ModelNotFoundException;
+import edu.njmsd.stonksmonkey.domain.exceptions.ValidationException;
 import edu.njmsd.stonksmonkey.domain.models.OperationCategory;
 import edu.njmsd.stonksmonkey.domain.services.CrudService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
@@ -39,9 +43,13 @@ abstract class BaseCategoryController {
     public ResponseEntity<OperationCategoryDto> createCategory(
             @RequestBody OperationCategoryModificationDto modification,
             HttpServletRequest request) throws URISyntaxException {
-        var category = service.create(categoryMapper.map(modification));
-        var uri = new URI(request.getRequestURI() + "/" + category.getId());
-        return ResponseEntity.created(uri).body(categoryDtoMapper.map(category));
+        try {
+            var category = service.create(categoryMapper.map(modification));
+            var uri = new URI(request.getRequestURI() + "/" + category.getId());
+            return ResponseEntity.created(uri).body(categoryDtoMapper.map(category));
+        } catch (ValidationException exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
@@ -50,12 +58,20 @@ abstract class BaseCategoryController {
             @RequestBody OperationCategoryModificationDto modification) {
         var category = categoryMapper.map(modification);
         category.setId(id);
-        category = service.update(category);
+        try {
+            category = service.update(category);
+        } catch (ValidationException exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+        }
         return categoryDtoMapper.map(category);
     }
 
     @DeleteMapping("/{id}")
     public void deleteCategory(@PathVariable long id) {
-        service.delete(id);
+        try {
+            service.delete(id);
+        } catch (ModelNotFoundException exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+        }
     }
 }
