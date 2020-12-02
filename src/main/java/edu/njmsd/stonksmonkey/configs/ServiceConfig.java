@@ -1,7 +1,7 @@
 package edu.njmsd.stonksmonkey.configs;
 
 import edu.njmsd.stonksmonkey.boundaries.adapters.CrudRepositoryAdapter;
-import edu.njmsd.stonksmonkey.boundaries.mappers.ModelMapper;
+import edu.njmsd.stonksmonkey.boundaries.mappers.ReversibleMapper;
 import edu.njmsd.stonksmonkey.data.entities.ExpenseCategoryEntity;
 import edu.njmsd.stonksmonkey.data.entities.ExpenseEntity;
 import edu.njmsd.stonksmonkey.data.entities.IncomeCategoryEntity;
@@ -14,6 +14,7 @@ import edu.njmsd.stonksmonkey.domain.models.Operation;
 import edu.njmsd.stonksmonkey.domain.models.OperationCategory;
 import edu.njmsd.stonksmonkey.domain.repositories.CrudRepository;
 import edu.njmsd.stonksmonkey.domain.services.CrudService;
+import edu.njmsd.stonksmonkey.domain.services.OperationCrudService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,8 +29,8 @@ public class ServiceConfig {
     @Bean
     public CrudRepository<OperationCategory> incomeCategoryCrudRepository(
             IncomeCategoryRepository repository,
-            ModelMapper<OperationCategory, IncomeCategoryEntity> mapper) {
-        return new CrudRepositoryAdapter<>(repository, mapper);
+            ReversibleMapper<IncomeCategoryEntity, OperationCategory> incomeCategoryMapper) {
+        return new CrudRepositoryAdapter<>(repository, incomeCategoryMapper);
     }
 
     @Bean
@@ -40,31 +41,35 @@ public class ServiceConfig {
     @Bean
     public CrudRepository<OperationCategory> expenseCategoryCrudRepository(
             ExpenseCategoryRepository repository,
-            ModelMapper<OperationCategory, ExpenseCategoryEntity> mapper) {
-        return new CrudRepositoryAdapter<>(repository, mapper);
+            ReversibleMapper<ExpenseCategoryEntity, OperationCategory> expenseCategoryMapper) {
+        return new CrudRepositoryAdapter<>(repository, expenseCategoryMapper);
     }
 
     @Bean
-    public CrudService<Operation> expenseCrudService(CrudRepository<Operation> expenseCrudRepository) {
-        return new CrudService<>(expenseCrudRepository);
+    public CrudService<Operation> expenseCrudService(
+            CrudRepository<Operation> expenseCrudRepository,
+            CrudRepository<OperationCategory> expenseCategoryCrudRepository) {
+        return new OperationCrudService(expenseCrudRepository, expenseCategoryCrudRepository);
     }
 
     @Bean
     public CrudRepository<Operation> expenseCrudRepository(
             ExpenseRepository repository,
-            ModelMapper<Operation, ExpenseEntity> mapper) {
-        return new CrudRepositoryAdapter<>(repository, mapper);
+            ReversibleMapper<ExpenseEntity, Operation> expenseMapper) {
+        return new CrudRepositoryAdapter<>(repository, expenseMapper);
     }
 
     @Bean
-    public CrudService<Operation> incomeCrudService(CrudRepository<Operation> incomeCrudRepository) {
-        return new CrudService<>(incomeCrudRepository);
+    public CrudService<Operation> incomeCrudService(
+            CrudRepository<Operation> incomeCrudRepository,
+            CrudRepository<OperationCategory> incomeCategoryCrudRepository) {
+        return new OperationCrudService(incomeCrudRepository, incomeCategoryCrudRepository);
     }
 
     @Bean
     public CrudRepository<Operation> incomeCrudRepository(
             IncomeRepository repository,
-            ModelMapper<Operation, IncomeEntity> mapper) {
-        return new CrudRepositoryAdapter<>(repository, mapper);
+            ReversibleMapper<IncomeEntity, Operation> incomeMapper) {
+        return new CrudRepositoryAdapter<>(repository, incomeMapper);
     }
 }

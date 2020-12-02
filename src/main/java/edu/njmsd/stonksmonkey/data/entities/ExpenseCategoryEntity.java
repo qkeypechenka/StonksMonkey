@@ -8,11 +8,4 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "expense_categories")
 public class ExpenseCategoryEntity extends OperationCategory {
-
-    protected ExpenseCategoryEntity() {
-    }
-
-    public ExpenseCategoryEntity(long id, long userId, String name) {
-        super(id, userId, name);
-    }
 }
