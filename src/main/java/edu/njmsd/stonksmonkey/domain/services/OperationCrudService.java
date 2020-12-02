@@ -3,6 +3,7 @@ package edu.njmsd.stonksmonkey.domain.services;
 import edu.njmsd.stonksmonkey.domain.models.Operation;
 import edu.njmsd.stonksmonkey.domain.models.OperationCategory;
 import edu.njmsd.stonksmonkey.domain.repositories.CrudRepository;
+import edu.njmsd.stonksmonkey.domain.validators.Validator;
 
 public class OperationCrudService extends CrudService<Operation> {
 
@@ -10,8 +11,9 @@ public class OperationCrudService extends CrudService<Operation> {
 
     public OperationCrudService(
             CrudRepository<Operation> operationRepository,
-            CrudRepository<OperationCategory> categoryRepository) {
-        super(operationRepository);
+            CrudRepository<OperationCategory> categoryRepository,
+            Validator<Operation> validator) {
+        super(operationRepository, validator);
         this.categoryRepository = categoryRepository;
     }
 
@@ -26,6 +28,7 @@ public class OperationCrudService extends CrudService<Operation> {
     }
 
     private Operation resolveCategory(Operation operation) {
+        // ToDo: throw exception if a category not found
         if (operation.getCategory() != null)
             operation.setCategory(categoryRepository.findById(operation.getCategory().getId()));
         return operation;
