@@ -15,6 +15,7 @@ import edu.njmsd.stonksmonkey.domain.models.OperationCategory;
 import edu.njmsd.stonksmonkey.domain.repositories.CrudRepository;
 import edu.njmsd.stonksmonkey.domain.services.CrudService;
 import edu.njmsd.stonksmonkey.domain.services.OperationCrudService;
+import edu.njmsd.stonksmonkey.domain.validators.Validator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,8 +23,10 @@ import org.springframework.context.annotation.Configuration;
 public class ServiceConfig {
 
     @Bean
-    public CrudService<OperationCategory> incomeCategoryCrudService(CrudRepository<OperationCategory> incomeCategoryCrudRepository) {
-        return new CrudService<>(incomeCategoryCrudRepository);
+    public CrudService<OperationCategory> incomeCategoryCrudService(
+            CrudRepository<OperationCategory> incomeCategoryCrudRepository,
+            Validator<OperationCategory> operationCategoryValidator) {
+        return new CrudService<>(incomeCategoryCrudRepository, operationCategoryValidator);
     }
 
     @Bean
@@ -34,8 +37,10 @@ public class ServiceConfig {
     }
 
     @Bean
-    public CrudService<OperationCategory> expenseCategoryCrudService(CrudRepository<OperationCategory> expenseCategoryCrudRepository) {
-        return new CrudService<>(expenseCategoryCrudRepository);
+    public CrudService<OperationCategory> expenseCategoryCrudService(
+            CrudRepository<OperationCategory> expenseCategoryCrudRepository,
+            Validator<OperationCategory> operationCategoryValidator) {
+        return new CrudService<>(expenseCategoryCrudRepository, operationCategoryValidator);
     }
 
     @Bean
@@ -48,8 +53,9 @@ public class ServiceConfig {
     @Bean
     public CrudService<Operation> expenseCrudService(
             CrudRepository<Operation> expenseCrudRepository,
-            CrudRepository<OperationCategory> expenseCategoryCrudRepository) {
-        return new OperationCrudService(expenseCrudRepository, expenseCategoryCrudRepository);
+            CrudRepository<OperationCategory> expenseCategoryCrudRepository,
+            Validator<Operation> operationValidator) {
+        return new OperationCrudService(expenseCrudRepository, expenseCategoryCrudRepository, operationValidator);
     }
 
     @Bean
@@ -62,8 +68,9 @@ public class ServiceConfig {
     @Bean
     public CrudService<Operation> incomeCrudService(
             CrudRepository<Operation> incomeCrudRepository,
-            CrudRepository<OperationCategory> incomeCategoryCrudRepository) {
-        return new OperationCrudService(incomeCrudRepository, incomeCategoryCrudRepository);
+            CrudRepository<OperationCategory> incomeCategoryCrudRepository,
+            Validator<Operation> operationValidator) {
+        return new OperationCrudService(incomeCrudRepository, incomeCategoryCrudRepository, operationValidator);
     }
 
     @Bean
