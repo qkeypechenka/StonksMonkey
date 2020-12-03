@@ -13,6 +13,7 @@ public class OperationCategoryStatisticsCalculator {
 
     public List<OperationCategorySummary> sumByCategory(List<Operation> operations) {
         return operations.stream()
+                .filter(o -> o.getCategory() != null)
                 .collect(Collectors.groupingBy(Operation::getCategory, Collectors.summingDouble(Operation::getAmount)))
                 .entrySet().stream().map(e -> new OperationCategorySummary(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
@@ -25,5 +26,4 @@ public class OperationCategoryStatisticsCalculator {
                 .map(s -> new OperationCategoryPercentage(s, s.getSum() / total))
                 .collect(Collectors.toList());
     }
-
 }
