@@ -1,9 +1,6 @@
 package edu.njmsd.stonksmonkey.configs;
 
-import edu.njmsd.stonksmonkey.api.dto.OperationCategoryDto;
-import edu.njmsd.stonksmonkey.api.dto.OperationCategoryModificationDto;
-import edu.njmsd.stonksmonkey.api.dto.OperationDto;
-import edu.njmsd.stonksmonkey.api.dto.OperationModificationDto;
+import edu.njmsd.stonksmonkey.api.dto.*;
 import edu.njmsd.stonksmonkey.boundaries.mappers.AutoMapper;
 import edu.njmsd.stonksmonkey.boundaries.mappers.Mapper;
 import edu.njmsd.stonksmonkey.boundaries.mappers.ReversibleMapper;
@@ -13,12 +10,24 @@ import edu.njmsd.stonksmonkey.data.entities.IncomeCategoryEntity;
 import edu.njmsd.stonksmonkey.data.entities.IncomeEntity;
 import edu.njmsd.stonksmonkey.domain.models.Operation;
 import edu.njmsd.stonksmonkey.domain.models.OperationCategory;
+import edu.njmsd.stonksmonkey.domain.models.OperationCategoryPercentage;
+import edu.njmsd.stonksmonkey.domain.models.OperationCategorySummary;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MapperConfig {
+
+    @Bean
+    public Mapper<OperationCategorySummary, OperationCategorySummaryDto> summaryMapper(ModelMapper modelMapper) {
+        return new AutoMapper<>(modelMapper, OperationCategorySummary.class, OperationCategorySummaryDto.class);
+    }
+
+    @Bean
+    public Mapper<OperationCategoryPercentage, OperationCategoryPercentageDto> percentageMapper(ModelMapper modelMapper) {
+        return new AutoMapper<>(modelMapper, OperationCategoryPercentage.class, OperationCategoryPercentageDto.class);
+    }
 
     @Bean
     public Mapper<OperationCategory, OperationCategoryDto> categoryDtoMapper(ModelMapper modelMapper) {

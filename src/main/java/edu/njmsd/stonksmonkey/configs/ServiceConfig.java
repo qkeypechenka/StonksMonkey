@@ -1,6 +1,8 @@
 package edu.njmsd.stonksmonkey.configs;
 
 import edu.njmsd.stonksmonkey.boundaries.adapters.CrudRepositoryAdapter;
+import edu.njmsd.stonksmonkey.boundaries.adapters.ExpenseRepositoryAdapter;
+import edu.njmsd.stonksmonkey.boundaries.adapters.IncomeRepositoryAdapter;
 import edu.njmsd.stonksmonkey.boundaries.mappers.ReversibleMapper;
 import edu.njmsd.stonksmonkey.data.entities.ExpenseCategoryEntity;
 import edu.njmsd.stonksmonkey.data.entities.ExpenseEntity;
@@ -13,6 +15,7 @@ import edu.njmsd.stonksmonkey.data.repositories.IncomeRepository;
 import edu.njmsd.stonksmonkey.domain.models.Operation;
 import edu.njmsd.stonksmonkey.domain.models.OperationCategory;
 import edu.njmsd.stonksmonkey.domain.repositories.CrudRepository;
+import edu.njmsd.stonksmonkey.domain.repositories.OperationRepository;
 import edu.njmsd.stonksmonkey.domain.services.CrudService;
 import edu.njmsd.stonksmonkey.domain.services.OperationCrudService;
 import edu.njmsd.stonksmonkey.domain.validators.Validator;
@@ -59,10 +62,10 @@ public class ServiceConfig {
     }
 
     @Bean
-    public CrudRepository<Operation> expenseCrudRepository(
+    public OperationRepository expenseCrudRepository(
             ExpenseRepository repository,
             ReversibleMapper<ExpenseEntity, Operation> expenseMapper) {
-        return new CrudRepositoryAdapter<>(repository, expenseMapper);
+        return new ExpenseRepositoryAdapter(repository, expenseMapper);
     }
 
     @Bean
@@ -74,9 +77,9 @@ public class ServiceConfig {
     }
 
     @Bean
-    public CrudRepository<Operation> incomeCrudRepository(
+    public OperationRepository incomeCrudRepository(
             IncomeRepository repository,
             ReversibleMapper<IncomeEntity, Operation> incomeMapper) {
-        return new CrudRepositoryAdapter<>(repository, incomeMapper);
+        return new IncomeRepositoryAdapter(repository, incomeMapper);
     }
 }

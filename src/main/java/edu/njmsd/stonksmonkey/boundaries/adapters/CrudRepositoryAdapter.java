@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 public class CrudRepositoryAdapter<M, E, R extends JpaRepository<E, Long>> implements CrudRepository<M> {
 
-    private final R repository;
-    private final ReversibleMapper<E, M> mapper;
+    protected final R repository;
+    protected final ReversibleMapper<E, M> mapper;
 
     public CrudRepositoryAdapter(R repository, ReversibleMapper<E, M> mapper) {
         this.repository = repository;
