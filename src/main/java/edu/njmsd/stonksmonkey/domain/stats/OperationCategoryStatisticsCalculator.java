@@ -23,7 +23,7 @@ public class OperationCategoryStatisticsCalculator {
         var sum = sumByCategory(operations);
         var total = (Double) sum.stream().mapToDouble(OperationCategorySummary::getSum).sum();
         return sum.stream()
-                .map(s -> new OperationCategoryPercentage(s, s.getSum() / total))
+                .map(s -> new OperationCategoryPercentage(s.getCategory(), s.getSum(), s.getSum() / total))
                 .collect(Collectors.toList());
     }
 }

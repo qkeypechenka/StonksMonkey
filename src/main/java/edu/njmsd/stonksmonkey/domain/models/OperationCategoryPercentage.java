@@ -1,16 +1,22 @@
 package edu.njmsd.stonksmonkey.domain.models;
 
 public class OperationCategoryPercentage {
-    private final OperationCategorySummary summary;
+    private final OperationCategory category;
+    private final double sum;
     private final double percent;
 
-    public OperationCategoryPercentage(OperationCategorySummary summary, double percent) {
-        this.summary = summary;
+    public OperationCategoryPercentage(OperationCategory category, double sum, double percent) {
+        this.category = category;
+        this.sum = sum;
         this.percent = percent;
     }
 
-    public OperationCategorySummary getSummary() {
-        return summary;
+    public OperationCategory getCategory() {
+        return category;
+    }
+
+    public double getSum() {
+        return sum;
     }
 
     public double getPercent() {
