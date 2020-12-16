@@ -1,5 +1,6 @@
 package edu.njmsd.stonksmonkey.api.controllers.operation;
 
+import edu.njmsd.stonksmonkey.api.controllers.CrudController;
 import edu.njmsd.stonksmonkey.api.dto.OperationDto;
 import edu.njmsd.stonksmonkey.api.dto.OperationModificationDto;
 import edu.njmsd.stonksmonkey.boundaries.mappers.Mapper;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/expenses")
-class ExpenseController extends BaseOperationController {
+class ExpenseController extends CrudController<Operation, OperationDto, OperationModificationDto> {
 
     public ExpenseController(
             CrudService<Operation> expenseCrudService,
