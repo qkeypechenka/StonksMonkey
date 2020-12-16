@@ -48,7 +48,7 @@ abstract class BaseCategoryController {
             var uri = new URI(request.getRequestURI() + "/" + category.getId());
             return ResponseEntity.created(uri).body(categoryDtoMapper.map(category));
         } catch (ValidationException exception) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, exception.getMessage());
         }
     }
 
@@ -61,7 +61,7 @@ abstract class BaseCategoryController {
         try {
             category = service.update(category);
         } catch (ValidationException exception) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, exception.getMessage());
         }
         return categoryDtoMapper.map(category);
     }
