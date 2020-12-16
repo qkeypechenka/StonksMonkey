@@ -30,7 +30,7 @@ public class CrudService<T> {
         return repository.save(model);
     }
 
-    public void delete(long id) {
+    public void delete(long id) throws ModelNotFoundException {
         if (repository.findById(id) == null)
             throw new ModelNotFoundException(id);
         repository.delete(id);

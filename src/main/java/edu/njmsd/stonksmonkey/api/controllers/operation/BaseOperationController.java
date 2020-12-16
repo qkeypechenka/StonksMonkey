@@ -49,8 +49,6 @@ abstract class BaseOperationController {
             return ResponseEntity.created(uri).body(operationDtoMapper.map(operation));
         } catch (ValidationException exception) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, exception.getMessage());
-        } catch (ModelNotFoundException exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
         }
     }
 
@@ -62,8 +60,6 @@ abstract class BaseOperationController {
             operation = service.update(operation);
         } catch (ValidationException exception) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, exception.getMessage());
-        } catch (ModelNotFoundException exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
         }
         return operationDtoMapper.map(operation);
     }
