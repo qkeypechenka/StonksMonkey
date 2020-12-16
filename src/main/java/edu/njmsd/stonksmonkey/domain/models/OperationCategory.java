@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class OperationCategory {
+public class OperationCategory implements Identifiable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

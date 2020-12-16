@@ -2,7 +2,7 @@ package edu.njmsd.stonksmonkey.domain.models;
 
 import java.time.LocalDate;
 
-public class Operation {
+public class Operation implements Identifiable {
 
     private long id;
     private long userId;
