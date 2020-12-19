@@ -3,6 +3,7 @@ package edu.njmsd.stonksmonkey.api.controllers.stats;
 import edu.njmsd.stonksmonkey.api.dto.ListResponse;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategoryPercentageDto;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategorySummaryDto;
+import edu.njmsd.stonksmonkey.api.dto.ProfitDto;
 import edu.njmsd.stonksmonkey.boundaries.mappers.Mapper;
 import edu.njmsd.stonksmonkey.domain.models.OperationCategoryPercentage;
 import edu.njmsd.stonksmonkey.domain.models.OperationCategorySummary;
@@ -67,5 +68,13 @@ public class StatisticsController {
     ) {
         var stats = service.getExpensesCategoryPercentage(new StatisticsService.StatisticParams(from, to));
         return new ListResponse<>(stats.stream().map(percentageMapper::map).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/stats/profit")
+    public ProfitDto getProfit(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+    ) {
+        return new ProfitDto(service.getProfit(new StatisticsService.StatisticParams(from, to)));
     }
 }
