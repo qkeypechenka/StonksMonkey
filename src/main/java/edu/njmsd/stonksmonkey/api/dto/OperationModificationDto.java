@@ -4,14 +4,14 @@ import java.time.LocalDate;
 
 public class OperationModificationDto {
 
-    private long categoryId;
+    private Long categoryId;
     private double amount;
     private LocalDate date;
 
     private OperationModificationDto() {
     }
 
-    public long getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 

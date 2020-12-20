@@ -28,7 +28,6 @@ public class OperationCrudService extends CrudService<Operation> {
     }
 
     private Operation resolveCategory(Operation operation) {
-        // ToDo: throw exception if a category not found
         if (operation.getCategory() != null)
             operation.setCategory(categoryRepository.findById(operation.getCategory().getId()));
         return operation;
