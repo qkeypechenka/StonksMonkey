@@ -3,6 +3,7 @@ package edu.njmsd.stonksmonkey.api.controllers.category;
 import edu.njmsd.stonksmonkey.api.dto.ListResponse;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategoryDto;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategoryModificationDto;
+import edu.njmsd.stonksmonkey.api.security.ApiUser;
 import edu.njmsd.stonksmonkey.boundaries.mappers.Mapper;
 import edu.njmsd.stonksmonkey.domain.exceptions.ModelNotFoundException;
 import edu.njmsd.stonksmonkey.domain.exceptions.ValidationException;
@@ -10,6 +11,7 @@ import edu.njmsd.stonksmonkey.domain.models.OperationCategory;
 import edu.njmsd.stonksmonkey.domain.services.CrudService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -34,7 +36,7 @@ abstract class BaseCategoryController {
     }
 
     @GetMapping
-    public ListResponse<OperationCategoryDto> getCategories() {
+    public ListResponse<OperationCategoryDto> getCategories(@AuthenticationPrincipal final ApiUser user) {
         var items = service.get().stream().map(categoryDtoMapper::map).collect(Collectors.toList());
         return new ListResponse<>(items);
     }
