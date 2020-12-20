@@ -1,8 +1,6 @@
 package edu.njmsd.stonksmonkey.domain.services;
 
-import edu.njmsd.stonksmonkey.domain.models.Operation;
-import edu.njmsd.stonksmonkey.domain.models.OperationCategoryPercentage;
-import edu.njmsd.stonksmonkey.domain.models.OperationCategorySummary;
+import edu.njmsd.stonksmonkey.domain.models.*;
 import edu.njmsd.stonksmonkey.domain.repositories.OperationRepository;
 import edu.njmsd.stonksmonkey.domain.stats.OperationCategoryStatisticsCalculator;
 import edu.njmsd.stonksmonkey.domain.stats.SummaryStatisticsCalculator;
@@ -46,16 +44,24 @@ public class StatisticsService {
         return categoryStatisticsCalculator.getPercentageByCategory(getOperations(expenseRepository, params));
     }
 
-    public double getProfit(StatisticParams params) {
+    public List<DateScopedSummary> sumIncomes(DateScopedStatisticParams params) {
+        return summaryStatisticsCalculator.sumAmounts(getOperations(incomesRepository, params), params.scope);
+    }
+
+    public List<DateScopedSummary> sumExpenses(DateScopedStatisticParams params) {
+        return summaryStatisticsCalculator.sumAmounts(getOperations(expenseRepository, params), params.scope);
+    }
+
+    public List<DateScopedProfit> getProfit(DateScopedStatisticParams params) {
         var incomes = getOperations(incomesRepository, params);
         var expenses = getOperations(expenseRepository, params);
-        return summaryStatisticsCalculator.calculateProfit(incomes, expenses);
+        return summaryStatisticsCalculator.calculateProfit(incomes, expenses, params.scope);
     }
 
     private static List<Operation> getOperations(OperationRepository repository, StatisticParams params) {
-        return params.getFrom() == null || params.getTo() == null
+        return params.from == null || params.to == null
                 ? repository.getAll()
-                : repository.getAllBetween(params.getFrom(), params.getTo());
+                : repository.getAllBetween(params.from, params.to);
     }
 
     public static class StatisticParams {
@@ -67,13 +73,15 @@ public class StatisticsService {
             this.from = from;
             this.to = to;
         }
+    }
 
-        LocalDate getFrom() {
-            return from;
-        }
+    public static class DateScopedStatisticParams extends StatisticParams {
 
-        LocalDate getTo() {
-            return to;
+        private final DateScope scope;
+
+        public DateScopedStatisticParams(LocalDate from, LocalDate to, DateScope scope) {
+            super(from, to);
+            this.scope = scope;
         }
     }
 }

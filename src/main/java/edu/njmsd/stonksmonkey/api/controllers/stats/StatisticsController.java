@@ -1,12 +1,11 @@
 package edu.njmsd.stonksmonkey.api.controllers.stats;
 
+import edu.njmsd.stonksmonkey.api.dto.DateScopeDto;
 import edu.njmsd.stonksmonkey.api.dto.ListResponse;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategoryPercentageDto;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategorySummaryDto;
-import edu.njmsd.stonksmonkey.api.dto.ProfitDto;
 import edu.njmsd.stonksmonkey.boundaries.mappers.Mapper;
-import edu.njmsd.stonksmonkey.domain.models.OperationCategoryPercentage;
-import edu.njmsd.stonksmonkey.domain.models.OperationCategorySummary;
+import edu.njmsd.stonksmonkey.domain.models.*;
 import edu.njmsd.stonksmonkey.domain.services.StatisticsService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,14 +23,17 @@ public class StatisticsController {
     private final StatisticsService service;
     private final Mapper<OperationCategorySummary, OperationCategorySummaryDto> summaryMapper;
     private final Mapper<OperationCategoryPercentage, OperationCategoryPercentageDto> percentageMapper;
+    private final Mapper<DateScopeDto, DateScope> dateScopeMapper;
 
     StatisticsController(
             StatisticsService service,
             Mapper<OperationCategorySummary, OperationCategorySummaryDto> summaryMapper,
-            Mapper<OperationCategoryPercentage, OperationCategoryPercentageDto> percentageMapper) {
+            Mapper<OperationCategoryPercentage, OperationCategoryPercentageDto> percentageMapper,
+            Mapper<DateScopeDto, DateScope> dateScopeMapper) {
         this.service = service;
         this.summaryMapper = summaryMapper;
         this.percentageMapper = percentageMapper;
+        this.dateScopeMapper = dateScopeMapper;
     }
 
     @GetMapping("/incomes")
@@ -70,11 +72,36 @@ public class StatisticsController {
         return new ListResponse<>(stats.stream().map(percentageMapper::map).collect(Collectors.toList()));
     }
 
-    @GetMapping("/stats/profit")
-    public ProfitDto getProfit(
+    @GetMapping("/summary/income")
+    public ListResponse<DateScopedSummary> getIncomeSummary(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam(defaultValue = DateScopeDto.defaultValue) DateScopeDto scope
     ) {
-        return new ProfitDto(service.getProfit(new StatisticsService.StatisticParams(from, to)));
+        var params = new StatisticsService.DateScopedStatisticParams(from, to, dateScopeMapper.map(scope));
+        var stats = service.sumIncomes(params);
+        return new ListResponse<>(stats);
+    }
+
+    @GetMapping("/summary/expense")
+    public ListResponse<DateScopedSummary> getExpenseSummary(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam(defaultValue = DateScopeDto.defaultValue) DateScopeDto scope
+    ) {
+        var params = new StatisticsService.DateScopedStatisticParams(from, to, dateScopeMapper.map(scope));
+        var stats = service.sumExpenses(params);
+        return new ListResponse<>(stats);
+    }
+
+    @GetMapping("/profit")
+    public ListResponse<DateScopedProfit> getProfit(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam(defaultValue = DateScopeDto.defaultValue) DateScopeDto scope
+    ) {
+        var params = new StatisticsService.DateScopedStatisticParams(from, to, dateScopeMapper.map(scope));
+        var stats = service.getProfit(params);
+        return new ListResponse<>(stats);
     }
 }
