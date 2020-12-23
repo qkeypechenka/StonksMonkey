@@ -1,13 +1,14 @@
 package edu.njmsd.stonksmonkey.boundaries.adapters;
 
 import edu.njmsd.stonksmonkey.boundaries.mappers.ReversibleMapper;
+import edu.njmsd.stonksmonkey.data.repositories.OwnedEntityRepository;
 import edu.njmsd.stonksmonkey.domain.repositories.CrudRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CrudRepositoryAdapter<M, E, R extends JpaRepository<E, Long>> implements CrudRepository<M> {
+public class CrudRepositoryAdapter<M, E, R extends JpaRepository<E, Long> & OwnedEntityRepository<E>> implements CrudRepository<M> {
 
     protected final R repository;
     protected final ReversibleMapper<E, M> mapper;
@@ -18,13 +19,13 @@ public class CrudRepositoryAdapter<M, E, R extends JpaRepository<E, Long>> imple
     }
 
     @Override
-    public M findById(long id) {
-        return mapper.map(repository.findById(id).orElse(null));
+    public M findById(long id, long userId) {
+        return mapper.map(repository.findByIdAndUserId(id, userId).orElse(null));
     }
 
     @Override
-    public List<M> getAll() {
-        return repository.findAll().stream().map(mapper::map).collect(Collectors.toList());
+    public List<M> getAll(long userId) {
+        return repository.findByUserId(userId).stream().map(mapper::map).collect(Collectors.toList());
     }
 
     @Override

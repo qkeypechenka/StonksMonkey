@@ -16,22 +16,22 @@ public class CrudService<T> {
         this.validator = validator;
     }
 
-    public List<T> get() {
-        return repository.getAll();
+    public List<T> get(long userId) {
+        return repository.getAll(userId);
     }
 
-    public T create(T model) {
+    public T create(T model, long userId) {
         validator.validate(model);
         return repository.save(model);
     }
 
-    public T update(T model) {
+    public T update(T model, long userId) {
         validator.validate(model);
         return repository.save(model);
     }
 
-    public void delete(long id) throws ModelNotFoundException {
-        if (repository.findById(id) == null)
+    public void delete(long id, long userId) throws ModelNotFoundException {
+        if (repository.findById(id, userId) == null)
             throw new ModelNotFoundException(id);
         repository.delete(id);
     }

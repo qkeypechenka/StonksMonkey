@@ -5,8 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
-public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
+public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long>,
+        OwnedEntityRepository<ExpenseEntity> {
 
-    List<ExpenseEntity> findByDateBetween(LocalDate from, LocalDate to);
+    Optional<ExpenseEntity> findByIdAndUserId(long id, long userId);
+
+    List<ExpenseEntity> findByUserId(long userId);
+
+    List<ExpenseEntity> findByDateBetweenAndUserId(LocalDate from, LocalDate to, long userId);
 }
