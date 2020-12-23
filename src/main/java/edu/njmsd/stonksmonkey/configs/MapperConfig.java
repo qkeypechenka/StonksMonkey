@@ -20,13 +20,13 @@ import org.springframework.context.annotation.Configuration;
 public class MapperConfig {
 
     @Bean
-    public Mapper<OperationCategorySummary, OperationCategorySummaryDto> summaryMapper(ModelMapper modelMapper) {
-        return new AutoMapper<>(modelMapper, OperationCategorySummary.class, OperationCategorySummaryDto.class);
+    public Mapper<OperationCategoryPercentage, OperationCategoryPercentageDto> percentageMapper(ModelMapper modelMapper) {
+        return new AutoMapper<>(modelMapper, OperationCategoryPercentage.class, OperationCategoryPercentageDto.class);
     }
 
     @Bean
-    public Mapper<OperationCategoryPercentage, OperationCategoryPercentageDto> percentageMapper(ModelMapper modelMapper) {
-        return new AutoMapper<>(modelMapper, OperationCategoryPercentage.class, OperationCategoryPercentageDto.class);
+    public Mapper<OperationCategorySummary, OperationCategorySummaryDto> summaryMapper(ModelMapper modelMapper) {
+        return new AutoMapper<>(modelMapper, OperationCategorySummary.class, OperationCategorySummaryDto.class);
     }
 
     @Bean
@@ -55,13 +55,13 @@ public class MapperConfig {
     }
 
     @Bean
-    public ReversibleMapper<IncomeCategoryEntity, OperationCategory> incomeCategoryMapper(ModelMapper modelMapper) {
-        return new AutoMapper<>(modelMapper, IncomeCategoryEntity.class, OperationCategory.class);
+    public ReversibleMapper<ExpenseEntity, Operation> expenseMapper(ModelMapper modelMapper) {
+        return new AutoMapper<>(modelMapper, ExpenseEntity.class, Operation.class);
     }
 
     @Bean
-    public ReversibleMapper<ExpenseEntity, Operation> expenseMapper(ModelMapper modelMapper) {
-        return new AutoMapper<>(modelMapper, ExpenseEntity.class, Operation.class);
+    public ReversibleMapper<IncomeCategoryEntity, OperationCategory> incomeCategoryMapper(ModelMapper modelMapper) {
+        return new AutoMapper<>(modelMapper, IncomeCategoryEntity.class, OperationCategory.class);
     }
 
     @Bean

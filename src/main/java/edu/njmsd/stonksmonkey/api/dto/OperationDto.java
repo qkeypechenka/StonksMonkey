@@ -1,8 +1,10 @@
 package edu.njmsd.stonksmonkey.api.dto;
 
+import edu.njmsd.stonksmonkey.domain.models.Identifiable;
+
 import java.time.LocalDate;
 
-public class OperationDto {
+public class OperationDto implements Identifiable {
 
     private long id;
     private OperationCategoryDto category;

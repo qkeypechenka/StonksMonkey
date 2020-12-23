@@ -65,7 +65,7 @@ public class StatisticsController {
         return new ListResponse<>(stats.stream().map(percentageMapper::map).collect(Collectors.toList()));
     }
 
-    @GetMapping("/summary/income")
+    @GetMapping("/incomes/summary")
     public ListResponse<DateScopedSummary> getIncomeSummary(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
@@ -94,7 +94,7 @@ public class StatisticsController {
         return new ListResponse<>(stats.stream().map(percentageMapper::map).collect(Collectors.toList()));
     }
 
-    @GetMapping("/summary/expense")
+    @GetMapping("/expenses/summary")
     public ListResponse<DateScopedSummary> getExpenseSummary(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
