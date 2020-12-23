@@ -60,16 +60,18 @@ public class StatisticsService {
 
     private static List<Operation> getOperations(OperationRepository repository, StatisticParams params) {
         return params.from == null || params.to == null
-                ? repository.getAll()
-                : repository.getAllBetween(params.from, params.to);
+                ? repository.getAll(params.userId)
+                : repository.getAllBetween(params.from, params.to, params.userId);
     }
 
     public static class StatisticParams {
 
+        private final long userId;
         private final LocalDate from;
         private final LocalDate to;
 
-        public StatisticParams(LocalDate from, LocalDate to) {
+        public StatisticParams(long userId, LocalDate from, LocalDate to) {
+            this.userId = userId;
             this.from = from;
             this.to = to;
         }
@@ -79,8 +81,8 @@ public class StatisticsService {
 
         private final DateScope scope;
 
-        public DateScopedStatisticParams(LocalDate from, LocalDate to, DateScope scope) {
-            super(from, to);
+        public DateScopedStatisticParams(long userId, LocalDate from, LocalDate to, DateScope scope) {
+            super(userId, from, to);
             this.scope = scope;
         }
     }

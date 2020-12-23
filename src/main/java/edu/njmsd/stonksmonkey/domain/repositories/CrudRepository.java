@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface CrudRepository<T> {
 
-    T findById(long id);
+    T findById(long id, long userId);
 
-    List<T> getAll();
+    List<T> getAll(long userId);
 
     T save(T entity);
 

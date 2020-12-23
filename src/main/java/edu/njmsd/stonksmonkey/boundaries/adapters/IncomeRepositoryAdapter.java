@@ -17,7 +17,9 @@ public class IncomeRepositoryAdapter extends CrudRepositoryAdapter<Operation, In
     }
 
     @Override
-    public List<Operation> getAllBetween(LocalDate from, LocalDate to) {
-        return repository.findByDateBetween(from, to).stream().map(mapper::map).collect(Collectors.toList());
+    public List<Operation> getAllBetween(LocalDate from, LocalDate to, long userId) {
+        return repository.findByDateBetweenAndUserId(from, to, userId).stream()
+                .map(mapper::map)
+                .collect(Collectors.toList());
     }
 }

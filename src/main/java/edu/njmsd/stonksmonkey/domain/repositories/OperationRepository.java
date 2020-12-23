@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface OperationRepository extends CrudRepository<Operation> {
 
-    List<Operation> getAllBetween(LocalDate from, LocalDate to);
+    List<Operation> getAllBetween(LocalDate from, LocalDate to, long userId);
 }

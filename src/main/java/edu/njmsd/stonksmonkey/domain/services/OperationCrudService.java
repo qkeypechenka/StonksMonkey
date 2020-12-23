@@ -1,5 +1,6 @@
 package edu.njmsd.stonksmonkey.domain.services;
 
+import edu.njmsd.stonksmonkey.domain.exceptions.ModelNotFoundException;
 import edu.njmsd.stonksmonkey.domain.models.Operation;
 import edu.njmsd.stonksmonkey.domain.models.OperationCategory;
 import edu.njmsd.stonksmonkey.domain.repositories.CrudRepository;
@@ -18,18 +19,18 @@ public class OperationCrudService extends CrudService<Operation> {
     }
 
     @Override
-    public Operation create(Operation model) {
-        return super.create(resolveCategory(model));
+    public Operation create(Operation model, long userId) {
+        return super.create(resolveCategory(model, userId), userId);
     }
 
     @Override
-    public Operation update(Operation model) {
-        return super.update(resolveCategory(model));
+    public Operation update(Operation model, long userId) throws ModelNotFoundException {
+        return super.update(resolveCategory(model, userId), userId);
     }
 
-    private Operation resolveCategory(Operation operation) {
+    private Operation resolveCategory(Operation operation, long userId) {
         if (operation.getCategory() != null)
-            operation.setCategory(categoryRepository.findById(operation.getCategory().getId()));
+            operation.setCategory(categoryRepository.findById(operation.getCategory().getId(), userId));
         return operation;
     }
 }
