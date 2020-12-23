@@ -62,6 +62,8 @@ public abstract class CrudController<M extends Identifiable & Owned, D, C> {
             model = service.update(model, user.getId());
         } catch (ValidationException exception) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, exception.getMessage());
+        } catch (ModelNotFoundException exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
         }
         return dtoMapper.map(model);
     }

@@ -1,12 +1,13 @@
 package edu.njmsd.stonksmonkey.domain.services;
 
 import edu.njmsd.stonksmonkey.domain.exceptions.ModelNotFoundException;
+import edu.njmsd.stonksmonkey.domain.models.Identifiable;
 import edu.njmsd.stonksmonkey.domain.repositories.CrudRepository;
 import edu.njmsd.stonksmonkey.domain.validators.Validator;
 
 import java.util.List;
 
-public class CrudService<T> {
+public class CrudService<T extends Identifiable> {
 
     private final CrudRepository<T> repository;
     private final Validator<T> validator;
@@ -25,7 +26,9 @@ public class CrudService<T> {
         return repository.save(model);
     }
 
-    public T update(T model, long userId) {
+    public T update(T model, long userId) throws ModelNotFoundException {
+        if (repository.findById(model.getId(), userId) == null)
+            throw new ModelNotFoundException(model.getId());
         validator.validate(model);
         return repository.save(model);
     }
