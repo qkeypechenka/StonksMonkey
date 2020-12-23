@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
 
-@RestController
+@RestController()
 @RequestMapping("/stats")
 public class StatisticsController {
 
@@ -36,21 +36,23 @@ public class StatisticsController {
         this.dateScopeMapper = dateScopeMapper;
     }
 
+    @GetMapping("/profit")
+    public ListResponse<DateScopedProfit> getProfit(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam(defaultValue = DateScopeDto.defaultValue) DateScopeDto scope
+    ) {
+        var params = new StatisticsService.DateScopedStatisticParams(from, to, dateScopeMapper.map(scope));
+        var stats = service.getProfit(params);
+        return new ListResponse<>(stats);
+    }
+
     @GetMapping("/incomes")
     public ListResponse<OperationCategorySummaryDto> sumIncomesByCategory(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
     ) {
         var stats = service.sumIncomesByCategory(new StatisticsService.StatisticParams(from, to));
-        return new ListResponse<>(stats.stream().map(summaryMapper::map).collect(Collectors.toList()));
-    }
-
-    @GetMapping("/expenses")
-    public ListResponse<OperationCategorySummaryDto> sumExpensesByCategory(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
-    ) {
-        var stats = service.sumExpensesByCategory(new StatisticsService.StatisticParams(from, to));
         return new ListResponse<>(stats.stream().map(summaryMapper::map).collect(Collectors.toList()));
     }
 
@@ -63,16 +65,7 @@ public class StatisticsController {
         return new ListResponse<>(stats.stream().map(percentageMapper::map).collect(Collectors.toList()));
     }
 
-    @GetMapping("/expenses/percentage")
-    public ListResponse<OperationCategoryPercentageDto> getExpensesCategoryPercentage(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
-    ) {
-        var stats = service.getExpensesCategoryPercentage(new StatisticsService.StatisticParams(from, to));
-        return new ListResponse<>(stats.stream().map(percentageMapper::map).collect(Collectors.toList()));
-    }
-
-    @GetMapping("/summary/income")
+    @GetMapping("/incomes/summary")
     public ListResponse<DateScopedSummary> getIncomeSummary(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
@@ -83,7 +76,25 @@ public class StatisticsController {
         return new ListResponse<>(stats);
     }
 
-    @GetMapping("/summary/expense")
+    @GetMapping("/expenses")
+    public ListResponse<OperationCategorySummaryDto> sumExpensesByCategory(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+    ) {
+        var stats = service.sumExpensesByCategory(new StatisticsService.StatisticParams(from, to));
+        return new ListResponse<>(stats.stream().map(summaryMapper::map).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/expenses/percentage")
+    public ListResponse<OperationCategoryPercentageDto> getExpensesCategoryPercentage(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+    ) {
+        var stats = service.getExpensesCategoryPercentage(new StatisticsService.StatisticParams(from, to));
+        return new ListResponse<>(stats.stream().map(percentageMapper::map).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/expenses/summary")
     public ListResponse<DateScopedSummary> getExpenseSummary(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
@@ -91,17 +102,6 @@ public class StatisticsController {
     ) {
         var params = new StatisticsService.DateScopedStatisticParams(from, to, dateScopeMapper.map(scope));
         var stats = service.sumExpenses(params);
-        return new ListResponse<>(stats);
-    }
-
-    @GetMapping("/profit")
-    public ListResponse<DateScopedProfit> getProfit(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
-            @RequestParam(defaultValue = DateScopeDto.defaultValue) DateScopeDto scope
-    ) {
-        var params = new StatisticsService.DateScopedStatisticParams(from, to, dateScopeMapper.map(scope));
-        var stats = service.getProfit(params);
         return new ListResponse<>(stats);
     }
 }

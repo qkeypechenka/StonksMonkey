@@ -1,5 +1,6 @@
 package edu.njmsd.stonksmonkey.api.controllers.category;
 
+import edu.njmsd.stonksmonkey.api.controllers.CrudController;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategoryDto;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategoryModificationDto;
 import edu.njmsd.stonksmonkey.boundaries.mappers.Mapper;
@@ -8,9 +9,10 @@ import edu.njmsd.stonksmonkey.domain.services.CrudService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("expense-categories")
-class ExpenseCategoryController extends BaseCategoryController {
+@RestController()
+@RequestMapping("/expense-categories")
+class ExpenseCategoryController
+        extends CrudController<OperationCategory, OperationCategoryDto, OperationCategoryModificationDto> {
 
     public ExpenseCategoryController(
             CrudService<OperationCategory> expenseCategoryCrudService,

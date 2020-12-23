@@ -1,5 +1,6 @@
 package edu.njmsd.stonksmonkey.api.controllers.category;
 
+import edu.njmsd.stonksmonkey.api.controllers.CrudController;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategoryDto;
 import edu.njmsd.stonksmonkey.api.dto.OperationCategoryModificationDto;
 import edu.njmsd.stonksmonkey.boundaries.mappers.Mapper;
@@ -10,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
 @RequestMapping("/income-categories")
-class IncomeCategoryController extends BaseCategoryController {
+class IncomeCategoryController
+        extends CrudController<OperationCategory, OperationCategoryDto, OperationCategoryModificationDto> {
 
     public IncomeCategoryController(
             CrudService<OperationCategory> incomeCategoryCrudService,

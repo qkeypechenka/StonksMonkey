@@ -1,6 +1,8 @@
 package edu.njmsd.stonksmonkey.api.dto;
 
-public class OperationCategoryDto {
+import edu.njmsd.stonksmonkey.domain.models.Identifiable;
+
+public class OperationCategoryDto implements Identifiable {
 
     private long id;
     private String name;

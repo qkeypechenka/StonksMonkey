@@ -14,6 +14,6 @@ public class OperationCategoryValidator implements Validator<OperationCategory> 
 
     private static void validateName(OperationCategory category) throws ValidationException {
         if (category.getName() == null || category.getName().isBlank())
-            throw new ValidationException("Operation category name cannot be blank");
+            throw new ValidationException("Operation category name cannot be empty");
     }
 }
